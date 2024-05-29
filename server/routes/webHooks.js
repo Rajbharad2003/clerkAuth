@@ -3,6 +3,6 @@ const router = express.Router();
 
 const { syncClerkData } = require('../controllers/webHooksController.js');
 
-router.route("/").post(syncClerkData);
+router.route("/createUpdateUser").post(syncClerkData);
 
 module.exports = router;
