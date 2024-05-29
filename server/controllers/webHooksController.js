@@ -95,7 +95,7 @@ async function handleUserUpdated(evt) {
   }
 }
 
-export const syncClerkData = async (request, response) => {
+const syncClerkData = async (request, response) => {
     const evt = await extractAndVerifyHeaders(request, response);
 
     switch (evt.type) {
@@ -145,4 +145,4 @@ export const syncClerkData = async (request, response) => {
 //   );
 // }; 
 
-// module.exports = { syncClerkData };
+module.exports = { syncClerkData };
