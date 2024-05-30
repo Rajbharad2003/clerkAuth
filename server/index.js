@@ -152,7 +152,8 @@ const syncClerkData = async (req, res) => {
 
         // Get the headers and body
         const headers = req.headers;
-        const payload = req.body;
+        //const payload = req.body;
+        const payload = (await buffer(req.body)).toString();
 
         // Get the Svix headers for verification
         const svix_id = headers["svix-id"];
