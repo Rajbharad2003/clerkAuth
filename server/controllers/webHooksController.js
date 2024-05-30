@@ -148,6 +148,8 @@ const USERS_COLLECTION_NAME = process.env.USERS_COLLECTION_NAME;
 async function extractAndVerifyHeaders(request, response) {
     const headers = request.headers;
     const payload = request.body;
+    console.log(request.body);
+    console.log("body data :",request.body.data);
 
     let svix_id, svix_timestamp, svix_signature;
     console.log("webhooh secret :", WEBHOOK_SECRET);
