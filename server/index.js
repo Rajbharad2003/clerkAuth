@@ -28,6 +28,7 @@ const bodyParser = require('body-parser')
 const app = express();
 app.use(express.json()); // For parsing application/json
 app.use(express.urlencoded({ extended: true })); // For parsing application/x-www-form-urlencoded
+app.use(bodyParser.json());
 
 const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
 const DB_URI = process.env.DB_URI;
@@ -223,7 +224,7 @@ const syncClerkData = async (request, response) => {
 
 app.get('/', (req, res) => res.send('Hello world!'));
 
-app.post('/webHooks/creteUpdateUser', bodyParser.raw({ type: "application/json" }), syncClerkData);
+app.post('/webHooks/createUpdateUser', syncClerkData);
 
 const PORT = process.env.PORT || 3000;
 
