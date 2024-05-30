@@ -226,9 +226,6 @@ const syncClerkData = async (request, response) => {
 app.post('/webHook/creteUpdateUser', bodyParser.raw({ type: "application/json" }), syncClerkData);
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
 
 app.listen(process.env.PORT, () => {
     console.log(`I am listen on ${process.env.PORT}`)
