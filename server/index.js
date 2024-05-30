@@ -151,15 +151,21 @@ const syncClerkData = async (req, res) => {
             throw new Error("You need a WEBHOOK_SECRET in your .env");
         }
 
+        console.log("After WEBHOOK taken.");
+
         // Get the headers and body
         const headers = req.headers;
         //const payload = req.body;
         const payload = (await buffer(req.body)).toString();
 
+        console.log("Headers and Payload Readable");
+
         // Get the Svix headers for verification
         const svix_id = headers["svix-id"];
         const svix_timestamp = headers["svix-timestamp"];
         const svix_signature = headers["svix-signature"];
+
+        console.log("SVIX header is okay");
 
         // If there are no Svix headers, error out
         if (!svix_id || !svix_timestamp || !svix_signature) {
@@ -168,8 +174,12 @@ const syncClerkData = async (req, res) => {
             });
         }
 
+        console.log("Varify svix using if condition");
+
         // Create a new Svix instance with your secret.
         const wh = new Webhook(WEBHOOK_SECRET);
+
+        console.log("wh created : ", wh);
 
         let evt;
 
@@ -193,10 +203,13 @@ const syncClerkData = async (req, res) => {
             return; // Error response already sent in extractAndVerifyHeaders
         }
 
+        console.log("There is evt already.");
+
         console.log("Event Type:", evt.type);
 
         switch (evt.type) {
             case "user.created":
+                console.log("Inside user.created");
                 await handleUserCreated(evt);
                 response.status(201).json({
                     success: true,
