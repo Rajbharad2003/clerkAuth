@@ -135,12 +135,12 @@ async function handleUserUpdated(evt) {
     }
 }
 
-const syncClerkData = async (request, response) => {
+const syncClerkData = async (req, res) => {
     try {
         // Log the incoming request
         console.log('Incoming Request:', {
-            headers: request.headers,
-            body: request.body
+            headers: req.headers,
+            body: req.body
         });
 
         const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
