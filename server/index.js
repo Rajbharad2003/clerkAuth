@@ -223,7 +223,7 @@ const syncClerkData = async (request, response) => {
 
 app.get('/', (req, res) => res.send('Hello world!'));
 
-app.post('/webHook/creteUpdateUser', bodyParser.raw({ type: "application/json" }), syncClerkData);
+app.post('/webHooks/creteUpdateUser', bodyParser.raw({ type: "application/json" }), syncClerkData);
 
 const PORT = process.env.PORT || 3000;
 
