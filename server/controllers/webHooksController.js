@@ -136,8 +136,11 @@
 const { Webhook } = require("svix");
 require('dotenv').config();
 const express = require('express');
+const { connect } = require("http2");
+const User = require("../models/userSchema");
 const app = express();
 app.use(express.json());
+// const Doctor
 
 const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
 const DB_NAME = process.env.DB_NAME;
@@ -192,17 +195,19 @@ function getUserDataFromEvent(evt) {
         lastName: evt.data.last_name,
         email: evt.data.email_addresses[0].email_address,
         image: evt.data.profile_image_url,
+        username: evt.username
     };
 }
 
 async function handleUserCreated(evt) {
-    const mongodb = context.services.get("mongodb-atlas");
-    const usersCollection = mongodb.db(DB_NAME).collection(USERS_COLLECTION_NAME);
+    // const mongodb = context.services.get("mongodb-atlas");
+    // const usersCollection = mongodb.db(DB_NAME).collection(USERS_COLLECTION_NAME);
+    // connect();
 
     const newUser = getUserDataFromEvent(evt);
 
     try {
-        const user = await usersCollection.insertOne(newUser);
+        const user = await User.create(newUser);
         console.log(`Successfully inserted user with _id: ${user.insertedId}`);
     } catch (err) {
         console.error(`Failed to insert user: ${err}`);
