@@ -244,6 +244,7 @@ async function handleUserUpdated(evt) {
 
 const syncClerkData = async (request, response) => {
     try {
+        console.log("body",request.body)
         const evt = await extractAndVerifyHeaders(request, response);
         if (!evt) {
             return; // Error response already sent in extractAndVerifyHeaders
