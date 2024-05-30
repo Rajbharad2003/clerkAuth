@@ -156,7 +156,8 @@ const syncClerkData = async (req, res) => {
         // Get the headers and body
         const headers = req.headers;
         //const payload = req.body;
-        const payload = (await buffer(req.body)).toString();
+        // const payload = (await buffer(req.body)).toString();
+        const payload = req.body.toString('utf8');
 
         console.log("Headers and Payload Readable");
 
