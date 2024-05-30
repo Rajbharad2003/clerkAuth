@@ -30,6 +30,8 @@ app.use(express.json()); // For parsing application/json
 app.use(express.urlencoded({ extended: true })); // For parsing application/x-www-form-urlencoded
 app.use(bodyParser.json());
 
+app.use('/webHooks/createUpdateUser', express.raw({ type: 'application/json' }));
+
 const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
 const DB_URI = process.env.DB_URI;
 const DB_NAME = process.env.DB_NAME;
