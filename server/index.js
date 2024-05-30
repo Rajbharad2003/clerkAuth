@@ -23,7 +23,8 @@ const express = require('express');
 require('dotenv').config();
 const { MongoClient } = require('mongodb');
 const { Webhook } = require("svix");
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const { buffer } = require("micro");
 
 const app = express();
 app.use(express.json()); // For parsing application/json
