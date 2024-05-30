@@ -136,7 +136,6 @@
 const { Webhook } = require("svix");
 require('dotenv').config();
 const express = require('express');
-const { connect } = require("http2");
 const User = require("../models/userSchema");
 const app = express();
 app.use(express.json());
@@ -151,6 +150,7 @@ async function extractAndVerifyHeaders(request, response) {
     const payload = request.body;
 
     let svix_id, svix_timestamp, svix_signature;
+    console.log("webhooh secret :", WEBHOOK_SECRET);
 
     try {
         svix_id = headers["svix-id"];
@@ -161,31 +161,40 @@ async function extractAndVerifyHeaders(request, response) {
             throw new Error('Missing Svix headers');
         }
     } catch (err) {
+        console.error('Error extracting Svix headers:', err.message);
         return response.status(400).json({
             success: false,
             message: "Error occurred -- no Svix headers",
         });
     }
 
+    console.log('Received Headers:', {
+        svix_id,
+        svix_timestamp,
+        svix_signature
+    });
+
+    console.log('Received Payload:', payload);
+
     const wh = new Webhook(WEBHOOK_SECRET);
 
     let evt;
 
     try {
-        evt = wh.verify(payload, {
+        evt = wh.verify(JSON.stringify(payload), {
             "svix-id": svix_id,
             "svix-timestamp": svix_timestamp,
             "svix-signature": svix_signature,
         });
     } catch (err) {
-        console.log("Webhook failed to verify. Error:", err.message);
+        console.error("Webhook failed to verify. Error:", err.message);
         return response.status(400).json({
             success: false,
             message: err.message,
         });
     }
 
-    return evt;
+    return evt;
 }
 
 function getUserDataFromEvent(evt) {
