@@ -154,33 +154,33 @@ const syncClerkData = async (req, res) => {
         console.log("After WEBHOOK taken.");
 
         // Get the headers and body
-        const headers = req.headers;
-        //const payload = req.body;
-        // const payload = (await buffer(req.body)).toString();
-        // const payload = req.body.toString('utf8');
-        const payload = await req.json();
-        const body = JSON.stringify(payload);
+        // const headers = req.headers;
+        // //const payload = req.body;
+        // // const payload = (await buffer(req.body)).toString();
+        // // const payload = req.body.toString('utf8');
+        // const payload = await req.json();
+        // const body = JSON.stringify(payload);
 
         console.log("Headers and Payload Readable");
 
         // Get the Svix headers for verification
-        const svix_id = headers["svix-id"];
-        const svix_timestamp = headers["svix-timestamp"];
-        const svix_signature = headers["svix-signature"];
+        // const svix_id = headers["svix-id"];
+        // const svix_timestamp = headers["svix-timestamp"];
+        // const svix_signature = headers["svix-signature"];
 
         console.log("SVIX header is okay");
 
         // If there are no Svix headers, error out
-        if (!svix_id || !svix_timestamp || !svix_signature) {
-            return new Response("Error occured -- no svix headers", {
-                status: 400,
-            });
-        }
+        // if (!svix_id || !svix_timestamp || !svix_signature) {
+        //     return new Response("Error occured -- no svix headers", {
+        //         status: 400,
+        //     });
+        // }
 
         console.log("Varify svix using if condition");
 
         // Create a new Svix instance with your secret.
-        const wh = new Webhook(WEBHOOK_SECRET);
+        // const wh = new Webhook(WEBHOOK_SECRET);
         // const jsonString = JSON.stringify(wh);
         // console.log("wh created : ", jsonString);
 
@@ -190,11 +190,17 @@ const syncClerkData = async (req, res) => {
         // If successful, the payload will be available from 'evt'
         // If the verification fails, error out and  return error code
         try {
-            evt = wh.verify(body, {
-                "svix-id": svix_id,
-                "svix-timestamp": svix_timestamp,
-                "svix-signature": svix_signature,
-            });
+            // evt = wh.verify(body, {
+            //     "svix-id": svix_id,
+            //     "svix-timestamp": svix_timestamp,
+            //     "svix-signature": svix_signature,
+            // });
+            const payloadString = req.body.toString();
+            const svixHeaders = req.headers;
+
+            const wh = new Webhook(process.env.CLERK_WEBHOOK_SECRET_KEY);
+            evt = wh.verify(payloadString, svixHeaders);
+
         } catch (err) {
             console.log("Error verifying webhook:", err.message);
             return res.status(400).json({
