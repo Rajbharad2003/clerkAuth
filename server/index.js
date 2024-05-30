@@ -157,7 +157,9 @@ const syncClerkData = async (req, res) => {
         const headers = req.headers;
         //const payload = req.body;
         // const payload = (await buffer(req.body)).toString();
-        const payload = req.body.toString('utf8');
+        // const payload = req.body.toString('utf8');
+        const payload = await req.json();
+        const body = JSON.stringify(payload);
 
         console.log("Headers and Payload Readable");
 
@@ -179,8 +181,8 @@ const syncClerkData = async (req, res) => {
 
         // Create a new Svix instance with your secret.
         const wh = new Webhook(WEBHOOK_SECRET);
-        const jsonString = JSON.stringify(wh);
-        console.log("wh created : ", jsonString);
+        // const jsonString = JSON.stringify(wh);
+        // console.log("wh created : ", jsonString);
 
         let evt;
 
@@ -188,7 +190,7 @@ const syncClerkData = async (req, res) => {
         // If successful, the payload will be available from 'evt'
         // If the verification fails, error out and  return error code
         try {
-            evt = jsonString.verify(payload, {
+            evt = wh.verify(body, {
                 "svix-id": svix_id,
                 "svix-timestamp": svix_timestamp,
                 "svix-signature": svix_signature,
