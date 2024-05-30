@@ -19,8 +19,6 @@
 
 // app.use('/webHooks', require('./routes/webHooks'));
 
-// app.get('/', (req, res) => res.send('Hello world!'));
-
 const express = require('express');
 require('dotenv').config();
 const { MongoClient } = require('mongodb');
@@ -222,6 +220,8 @@ const syncClerkData = async (request, response) => {
         });
     }
 };
+
+app.get('/', (req, res) => res.send('Hello world!'));
 
 app.post('/webHook/creteUpdateUser', bodyParser.raw({ type: "application/json" }), syncClerkData);
 
